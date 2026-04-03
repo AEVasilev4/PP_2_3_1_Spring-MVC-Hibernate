@@ -1,6 +1,7 @@
 package web.model;
 
 public class Car {
+
     private Long id;
     private String brand;
     private String model;
@@ -22,4 +23,6 @@ public class Car {
     public void setModel(String model) { this.model = model; }
     public int getYear() { return year; }
     public void setYear(int year) { this.year = year; }
+
+
 }
