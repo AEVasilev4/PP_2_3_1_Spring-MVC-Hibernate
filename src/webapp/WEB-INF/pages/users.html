@@ -44,12 +44,12 @@
         <td th:text="${user.email}"></td>
         <td th:text="${user.age}"></td>
         <td>
-            <!-- Форма для редактирования: при нажатии на кнопку отправляет GET-запрос с ID -->
+           
             <form th:action="@{/users}" method="get" style="display:inline;">
                 <input type="hidden" name="id" th:value="${user.id}"/>
                 <button type="submit" class="edit-button">Редактировать</button>
             </form>
-            <!-- Форма для удаления: при нажатии на кнопку отправляет POST-запрос с ID -->
+            
             <form th:action="@{/users/delete}" method="post" style="display:inline;">
                 <input type="hidden" name="id" th:value="${user.id}"/>
                 <button type="submit" class="delete-button">Удалить</button>
@@ -59,10 +59,10 @@
     </tbody>
 </table>
 
-<!-- Форма для добавления/редактирования пользователя -->
+<!-- добавление/редактирование пользователя -->
 <h2 th:text="${user.id} == null or ${user.id} == 0 ? 'Добавить нового пользователя' : 'Редактировать пользователя (ID: ' + user.id + ')'"></h2>
 <form th:action="@{/users}" th:object="${user}" method="post">
-    <!-- Скрытое поле для ID, чтобы при обновлении контроллер знал, какого пользователя редактируем -->
+    <!--  ID какого пользователя редактируем -->
     <input type="hidden" th:field="*{id}" />
 
     <label for="name">Имя:</label>
