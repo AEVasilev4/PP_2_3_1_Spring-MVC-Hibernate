@@ -58,7 +58,7 @@ public class WebConfig implements WebMvcConfigurer {
         Properties props = new Properties();
         props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-        props.put("hibernate.dialect", env.getProperty("hibernate.dialect")); // Диалект
+        props.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
         em.setJpaProperties(props);
 
         return em;
@@ -96,7 +96,7 @@ public class WebConfig implements WebMvcConfigurer {
         resolver.setTemplateEngine(templateEngine());
         registry.viewResolver(resolver);
         resolver.setCharacterEncoding("UTF-8");
-        //resolver.setContentType("text/html; charset=UTF-8");
+        resolver.setContentType("text/html; charset=UTF-8");
 
 
     }

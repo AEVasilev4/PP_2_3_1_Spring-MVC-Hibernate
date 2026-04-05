@@ -9,20 +9,22 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  private Long id;
 
-    @Column(name = "name")
+
     private String name;
 
-    @Column(name = "email")
+
     private String email;
 
-    @Column(name = "age")
+
     private int age;
 
-    public User() {} // Обязательный пустой конструктор для Hibernate
+    public User() {
+    }
 
-    public User(String name, String email, int age) {
+    public User( String name, String email, int age) {
+
         this.name = name;
         this.email = email;
         this.age = age;

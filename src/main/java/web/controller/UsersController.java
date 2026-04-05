@@ -1,4 +1,5 @@
 package web.controller;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -22,52 +23,49 @@ public class UsersController {
         this.userService = userService;
     }
 
-    // Отображает список пользователей и форму для добавления/редактирования
-    // GET /users         -> отображает список и пустую форму "добавить"
-    // GET /users?id=1    -> отображает список и форму "редактировать" пользователя с id=1
+
     @GetMapping
     public String showAllUsers(@RequestParam(value = "id", required = false) Long id, Model model) {
-        model.addAttribute("users", userService.getAllUsers()); // Добавляем всех пользователей для таблицы
+        model.addAttribute("users", userService.getAllUsers());
 
         if (id != null) {
-            // Если передан ID, то это запрос на редактирование
+
             User userToEdit = userService.getUserById(id);
             if (userToEdit == null) {
-                // Если пользователь не найден, создаем новую пустую форму
+
                 model.addAttribute("user", new User());
-                // В реальном приложении можно добавить сообщение об ошибке
+
             } else {
-                model.addAttribute("user", userToEdit); // Добавляем существующего пользователя в форму
+                model.addAttribute("user", userToEdit);
             }
         } else {
-            // Если ID не передан, то это запрос на добавление нового пользователя
-            model.addAttribute("user", new User()); // Добавляем пустой объект для формы
+
+            model.addAttribute("user", new User());
         }
-        return "users"; // Имя Thymeleaf-шаблона
-    }
-    @GetMapping("/users")
-    public String editGet(@RequestParam(value = "id", required = false) Long id, Model model) {
-        // Просто перенаправляем на корень с тем же id
-        return "redirect:/" + (id != null ? "?id=" + id : "");
-    }
-    // Обрабатывает POST-запросы от формы (добавление или обновление)
-    // POST /users
-    @PostMapping("/users")
-    public String saveOrUpdateUser(@ModelAttribute("user") User user) {
-        if (user.getId() == null || user.getId() == 0) { // Если ID нет или 0, то это новый пользователь
-            userService.saveUser(user);
-        } else { // Иначе, это обновление существующего
-            userService.updateUser(user.getId(), user);
-        }
-        return "redirect:/users"; // Перенаправляем на GET /users для обновления списка
+        return "users";
     }
 
-    // Обрабатывает POST-запросы для удаления пользователя
-    // POST /users/delete?id=1
+    @GetMapping("/users")
+    public String editGet(@RequestParam(value = "id", required = false) Long id, Model model) {
+
+        return "redirect:/" + (id != null ? "?id=" + id : "");
+    }
+
+    @PostMapping("/users")
+    public String saveOrUpdateUser(@ModelAttribute("user") User user) {
+        if (user.getId() == null || user.getId() == 0) {
+            userService.saveUser(user);
+        } else {
+            userService.updateUser(user.getId(), user);
+        }
+        return "redirect:/users";
+    }
+
+
     @PostMapping("/users/delete")
-    public String deleteUser(@RequestParam("id") long id) {
+    public String deleteUser(@RequestParam("id") Long id) {
         userService.deleteUser(id);
-        return "redirect:/users"; // Перенаправляем на GET /users
+        return "redirect:/users";
     }
 
 }

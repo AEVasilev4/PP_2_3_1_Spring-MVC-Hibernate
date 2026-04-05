@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @PersistenceContext // Внедряет EntityManager
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Override
@@ -21,22 +21,22 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void saveUser(User user) {
-        entityManager.persist(user); // Для сохранения нового объекта
+        entityManager.persist(user);
     }
 
     @Override
     public User getUserById(long id) {
-        return entityManager.find(User.class, id); // Для поиска по ID
+        return entityManager.find(User.class, id);
     }
 
     @Override
     public void updateUser(long id, User updatedUser) {
-        User userToUpdate = getUserById(id); // Сначала находим существующего
+        User userToUpdate = getUserById(id);
         if (userToUpdate != null) {
             userToUpdate.setName(updatedUser.getName());
             userToUpdate.setEmail(updatedUser.getEmail());
             userToUpdate.setAge(updatedUser.getAge());
-            entityManager.merge(userToUpdate); // Для обновления существующего объекта
+            entityManager.merge(userToUpdate);
         }
     }
 
@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
     public void deleteUser(long id) {
         User userToDelete = getUserById(id);
         if (userToDelete != null) {
-            entityManager.remove(userToDelete); // Для удаления
+            entityManager.remove(userToDelete);
         }
     }
 }
