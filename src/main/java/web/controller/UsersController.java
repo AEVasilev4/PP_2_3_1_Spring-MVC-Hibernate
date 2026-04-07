@@ -13,7 +13,7 @@ import web.service.UserService;
 
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/users")
 public class UsersController {
 
     private final UserService userService;
@@ -24,51 +24,48 @@ public class UsersController {
     }
 
 
+    // все пользователи
     @GetMapping
-    public String showAllUsers(@RequestParam(value = "id", required = false) Long id, Model model) {
+    public String showAllUsers(Model model) {
         model.addAttribute("users", userService.getAllUsers());
-
-        if (id != null) {
-
-            User userToEdit = userService.getUserById(id);
-            if (userToEdit == null) {
-
-                model.addAttribute("user", new User());
-
-            } else {
-                model.addAttribute("user", userToEdit);
-            }
-        } else {
-
+        if (!model.containsAttribute("user")) {
             model.addAttribute("user", new User());
         }
         return "users";
     }
 
-    @GetMapping("/users")
-    public String editGet(@RequestParam(value = "id", required = false) Long id, Model model) {
 
-        return "redirect:/" + (id != null ? "?id=" + id : "");
-    }
-
-    @PostMapping("/users")
-    public String saveOrUpdateUser(@ModelAttribute("user") User user) {
-        if (user.getId() == null || user.getId() == 0) {
-            userService.saveUser(user);
-        } else {
-            userService.updateUser(user.getId(), user);
-        }
+    //добавление
+    @PostMapping("/add")
+    public String addUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
         return "redirect:/users";
     }
 
+    //форма редактирования
+    @GetMapping("/edit")
+    public String showEditForm(@RequestParam("id") Long id, Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("user", userService.getUserById(id));
+        return "users";
+    }
 
-    @PostMapping("/users/delete")
+    // обновление
+    @PostMapping("/update")
+    public String updateUser(@ModelAttribute("user") User user) {
+        userService.updateUser(user.getId(), user);
+        return "redirect:/users";
+    }
+
+    //удаление
+    @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
         userService.deleteUser(id);
         return "redirect:/users";
     }
 
 }
+
 
 
 

@@ -36,7 +36,9 @@ public class UserDaoImpl implements UserDao {
             userToUpdate.setName(updatedUser.getName());
             userToUpdate.setEmail(updatedUser.getEmail());
             userToUpdate.setAge(updatedUser.getAge());
-            entityManager.merge(userToUpdate);
+
+        } else {
+            throw new RuntimeException("User not found with id: " + id);
         }
     }
 

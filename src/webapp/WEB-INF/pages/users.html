@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="ru">
 
 <head>
+
     <meta charset="UTF-8">
     <title>Users</title>
     <style>
@@ -38,18 +39,18 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${users}">
+    <tr th:each="user:${users}">
         <td th:text="${user.id}"></td>
         <td th:text="${user.name}"></td>
         <td th:text="${user.email}"></td>
         <td th:text="${user.age}"></td>
         <td>
-            <!-- Форма для редактирования: при нажатии на кнопку отправляет GET-запрос с ID -->
-            <form th:action="@{/users}" method="get" style="display:inline;">
+            <!-- Форма для редактирования: при нажатии на кнопку отправляем GET-запрос с параметром ID -->
+            <form th:action="@{/users/edit}" method="get" style="display:inline;">
                 <input type="hidden" name="id" th:value="${user.id}"/>
                 <button type="submit" class="edit-button">Редактировать</button>
             </form>
-            <!-- Форма для удаления: при нажатии на кнопку отправляет POST-запрос с ID -->
+            <!-- Форма для удаления: при нажатии на кнопку отправляем POST-запрос с ID -->
             <form th:action="@{/users/delete}" method="post" style="display:inline;">
                 <input type="hidden" name="id" th:value="${user.id}"/>
                 <button type="submit" class="delete-button">Удалить</button>
@@ -59,22 +60,19 @@
     </tbody>
 </table>
 
-<!-- Форма для добавления/редактирования пользователя -->
-<h2 th:text="${user.id} == null or ${user.id} == 0 ? 'Добавить нового пользователя' : 'Редактировать пользователя (ID: ' + user.id + ')'"></h2>
-<form th:action="@{/users}" th:object="${user}" method="post">
-    <!-- Скрытое поле для ID, чтобы при обновлении контроллер знал, какого пользователя редактируем -->
-    <input type="hidden" th:field="*{id}" />
-
+<h2 th:text="${user.id == null or user.id == 0} ? 'Добавить нового пользователя' : 'Редактировать пользователя (ID: ' + user.id + ')'"></h2>
+<form th:action="${user.id == null or user.id == 0} ? '/users/add' : '/users/update'"
+      th:object="${user}" method="post">
+    <input type="hidden" th:field="*{id}" th:if="${user.id != null and user.id != 0}"/>
     <label for="name">Имя:</label>
-    <input type="text" id="name" th:field="*{name}" required/>
-    <br/>
+    <input type="text" id="name" th:field="*{name}" required/><br/>
     <label for="email">Email:</label>
-    <input type="text" id="email" th:field="*{email}" required/>
-    <br/>
+    <input type="text" id="email" th:field="*{email}" required/><br/>
     <label for="age">Возраст:</label>
-    <input type="number" id="age" th:field="*{age}" min="1" max="150" required/>
-    <br/>
-    <button type="submit" th:text="${user.id} == null or ${user.id} == 0 ? 'Добавить' : 'Обновить'"></button>
+    <input type="number" id="age" th:field="*{age}" min="1" max="150" required/><br/>
+    <button type="submit" th:text="${user.id == null or user.id == 0} ? 'Добавить' : 'Обновить'"></button>
+
+
 </form>
 
 </body>
