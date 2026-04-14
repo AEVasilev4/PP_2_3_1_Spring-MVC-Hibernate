@@ -41,12 +41,24 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void updateUser(long id, User updatedUser) {
+
+        User userToUpdate = getUserById(id);
+        if (userToUpdate == null) {
+            throw new RuntimeException("User not found with id: " + id);
+        }
+        userToUpdate.setName(updatedUser.getName());
+        userToUpdate.setEmail(updatedUser.getEmail());
+        userToUpdate.setAge(updatedUser.getAge());
         userDao.updateUser(id, updatedUser);
     }
 
     @Transactional
     @Override
     public void deleteUser(long id) {
-        userDao.deleteUser(id);
+
+        User userToDelete = getUserById(id);
+        if (userToDelete != null) {
+            userDao.deleteUser(id);
+        }
     }
 }

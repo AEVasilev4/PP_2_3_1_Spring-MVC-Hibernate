@@ -46,9 +46,15 @@ public class UsersController {
     //форма редактирования
     @GetMapping("/edit")
     public String showEditForm(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+        //model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("user", userService.getUserById(id));
         return "users";
+    }
+    @GetMapping("/new-user")
+    public String newUser(Model model) {
+
+        model.addAttribute("user", new User());
+        return "new-user";
     }
 
     // обновление

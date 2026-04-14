@@ -1,7 +1,9 @@
 package web.DAO;
 
+import org.hibernate.sql.Update;
 import org.springframework.stereotype.Repository;
 import web.model.User;
+import web.service.UserServiceImpl;
 
 
 import javax.persistence.EntityManager;
@@ -11,8 +13,11 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
+
     @PersistenceContext
     private EntityManager entityManager;
+
+
 
     @Override
     public List<User> getAllUsers() {
@@ -31,23 +36,13 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void updateUser(long id, User updatedUser) {
-        User userToUpdate = getUserById(id);
-        if (userToUpdate != null) {
-            userToUpdate.setName(updatedUser.getName());
-            userToUpdate.setEmail(updatedUser.getEmail());
-            userToUpdate.setAge(updatedUser.getAge());
-
-        } else {
-            throw new RuntimeException("User not found with id: " + id);
-        }
+        entityManager.merge(updatedUser);
     }
 
     @Override
     public void deleteUser(long id) {
-        User userToDelete = getUserById(id);
-        if (userToDelete != null) {
-            entityManager.remove(userToDelete);
-        }
+User user = entityManager.find(User.class,id);
+entityManager.remove(user);
     }
 }
 
