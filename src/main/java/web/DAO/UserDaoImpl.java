@@ -1,6 +1,7 @@
 package web.DAO;
 
 import org.hibernate.sql.Update;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import web.model.User;
 import web.service.UserServiceImpl;
@@ -10,7 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository
+@Component
 public class UserDaoImpl implements UserDao {
 
 
